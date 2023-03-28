@@ -1,6 +1,7 @@
 clc; clearvars; close all;
-test_or_dev = 'Test';
-set_settings_aw;
+global_setup;
+
+data_split = 'Test';
 scenar = 'oracle';
 
 % Anisotropy parameter for separation
@@ -11,6 +12,8 @@ switch scenar
         kappa=1;
 end
 
+Nsongs = get_nsongs(data_split)
+algos = {'wiener','consW','AW'}; Nalgos = length(algos);
 SDR = zeros(Nsongs,Nalgo); SIR = zeros(Nsongs,Nalgo); SAR = zeros(Nsongs,Nalgo);
 time_comput = zeros(Nsongs,Nalgo);
 
@@ -18,22 +21,11 @@ for ind=1:Nsongs
    
     % Load data
     clc; fprintf('Data %d / %d \n',ind,Nsongs);
-    num_piece = datavec(ind);
-    [sm,x,Sm,X] = get_data_DSD(dataset_path,test_or_dev,num_piece,Fs,Nfft,Nw,hop);
+    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop);
     [F,T,J] = size(Sm);
     
-    % Variance estimation
-    switch scenar
-        case 'oracle'
-            v = abs(Sm).^2;
-        case 'informed'
-            Wini=rand(F,K); Hini=rand(K,T);
-            v = zeros(F,T,J);
-            for j=1:J
-                [waux,haux] = NMF(abs(Sm(:,:,j)),Wini,Hini,iter_nmf,1,0);
-                v(:,:,j) = (waux*haux).^2;
-            end
-    end
+    % Get the variance
+    v = estimate_power(Sm, scenar, Knmf, iter_nmf)
     
     % Onset detection
     win = hann(Nw)/sqrt(Nfft);
@@ -68,12 +60,14 @@ for ind=1:Nsongs
         s_estim(:,:,al) = real(iSTFT(squeeze(Xe(:,:,:,al)),Nfft,hop,Nw,wtype));
     end
     
-    % Record
-    audiowrite(strcat(audio_path,scenar,'/song',int2str(ind),'mix.wav'),x,Fs);
+    % Record (create the folder if needed)
+    rec_dir = strcat(audio_path,'ICASSP17/',scenar,'/', int2str(ind), '/');
+    mkdir(rec_dir)
+    audiowrite(strcat(rec_dir,'mix.wav'),x,Fs);
     for j=1:J
-        audiowrite(strcat(audio_path,scenar,'/song',int2str(ind),'_source',int2str(j),'_orig.wav'),sm(j,:),Fs)
+        audiowrite(strcat(rec_dir,'source',int2str(j),'_orig.wav'),sm(j,:),Fs)
         for al = 1:Nalgo
-            audiowrite(strcat(audio_path,scenar,'/song',int2str(ind),'_source',int2str(j),'_',algos{al},'.wav'),s_estim(j,:,al),Fs);
+            audiowrite(strcat(rec_dir,'source',int2str(j),'_',algos{al},'.wav'),s_estim(j,:,al),Fs);
         end
     end
     
@@ -86,10 +80,4 @@ for ind=1:Nsongs
 end
 
 % Record score
-save(strcat(metrics_path,'separation_',scenar,'.mat'),'SDR','SIR','SAR','time_comput');
-
-% Plot score results
-figure;
-h11=subplot(1,3,1); boxplot(SDR); title('SDR (dB)'); set(gca,'FontSize',14,'XtickLabel',[]); set(gca,'FontSize',14,'XtickLabel',algos,'XtickLabelRotation',90);
-h12=subplot(1,3,2); boxplot(SIR); title('SIR (dB)'); set(gca,'FontSize',14,'XtickLabel',[]); set(gca,'FontSize',14,'XtickLabel',algos,'XtickLabelRotation',90);
-h13=subplot(1,3,3); boxplot(SAR); title('SAR (dB)'); set(gca,'FontSize',14,'XtickLabel',[]); set(gca,'FontSize',14,'XtickLabel',algos,'XtickLabelRotation',90);
+save(strcat(out_path,'aw_sep_',scenar,'.mat'),'SDR','SIR','SAR','time_comput');

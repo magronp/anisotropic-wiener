@@ -9,4 +9,11 @@ This repository contains the code related to the anisotropic Wiener (AW) filter 
 
 AW was also used in conjunction with NMF for joint magnitude and phase estimation (see [complex-isnmf](https://github.com/magronp/complex-isnmf) and [complex-beta-nmf](https://github.com/magronp/complex-beta-nmf)), and as post-processing in DNN-based separation (see [phase-madtwinnet](https://github.com/magronp/phase-madtwinnet) and [phase-hpss](https://github.com/magronp/phase-hpss)).
 
+si Octave, il faut le package signal (qui nécessite control)
+
+sudo apt install liboctave-dev
+sudo apt install octave-control
+sudo apt install octave-resample
+sudo apt install octave-statistics
+
 

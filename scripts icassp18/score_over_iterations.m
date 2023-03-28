@@ -1,6 +1,6 @@
 clear all; close all; clc;
 test_or_dev = 'Dev';
-set_settings_bag;
+set_setting;
 
 % parameters
 Kappa = [0.05 0.1 0.5 1 5 10]; Nk=length(Kappa);
@@ -35,7 +35,7 @@ for nk = 1:Nk
 end
 
 
-save(strcat(metrics,'score_over_iterations.mat'),'score','Kappa_lab','Tau_lab');
+save(strcat('outputs', 'score_over_iterations_bag.mat'),'score','Kappa_lab','Tau_lab');
 
 % plot results
 figure;
