@@ -11,9 +11,9 @@ AW was also used in conjunction with NMF for joint magnitude and phase estimatio
 
 si Octave, il faut le package signal (qui nécessite control)
 
-sudo apt install liboctave-dev
-sudo apt install octave-control
-sudo apt install octave-resample
-sudo apt install octave-statistics
+	sudo apt install liboctave-dev
+	sudo apt install octave-control
+	sudo apt install octave-resample
+	sudo apt install octave-statistics
 
 
