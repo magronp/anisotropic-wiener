@@ -1,4 +1,4 @@
-function [sm,x,Sm,X,ts,freq] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,ttotal,wtype)
+function [sm,x,Sm,X,ts,freq] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype)
 
 Fs_old=44100; % original sample rate
 
@@ -8,7 +8,7 @@ end
 
 % Specify a time chunk in seconds
 if nargin<8
-    ttotal = [70 80];
+    t_chunk = [70 80];
 end
 
 % Identify and skip empty songs
@@ -22,7 +22,7 @@ switch data_split
 end
 datavec(dataNaN)=[];
 datavec = datavec(1:min(Nsongs,length(datavec)));
-num_piece = datavec(ind)
+num_piece = datavec(ind);
 
 %%% Get files path
 dir_path = strcat(dataset_path,'Sources/',data_split);
@@ -34,7 +34,7 @@ L = strcat(dir_path,'/',song_name,'/',list_instr,'.wav');
 
 %%% Read time-domain signals
 
-t_beg = ttotal(1); t_end = ttotal(2);
+t_beg = t_chunk(1); t_end = t_chunk(2);
 sig_length = ceil(((t_end-t_beg)+1/Fs_old)*Fs);
 s_aux=zeros(J,sig_length);
 for j = 1:J

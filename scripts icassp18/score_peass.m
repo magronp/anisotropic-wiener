@@ -50,4 +50,4 @@ for it=1:Nsongs
 
 end
 
-save(strcat(metrics_path,'separation_peass.mat'),'score');
+save(strcat(metrics_path,'bag_test_peass.mat'),'score');

@@ -1,4 +1,4 @@
-function [SDR,SIR,SAR,perm] = GetSDR(se,s)
+function [SDR,SIR,SAR] = GetSDR(se,s)
 % se are the estimated signals
 % s are the reference signals
 
@@ -24,26 +24,12 @@ if nsampl2~=nsampl, error('The estimated sources and reference sources must have
 
 %%% Performance criteria %%%
 % Computation of the criteria for all possible pair matches
-SDR=zeros(nsrc,nsrc);
-SIR=zeros(nsrc,nsrc);
-SAR=zeros(nsrc,nsrc);
-for jest=1:nsrc,
-    for jtrue=1:nsrc,
-        [SDR(jest,jtrue),SIR(jest,jtrue),SAR(jest,jtrue)] = compute_measures(se(:,jest),s,jtrue);
-    end
+SDR=zeros(nsrc,1);
+SIR=zeros(nsrc,1);
+SAR=zeros(nsrc,1);
+for j=1:nsrc,
+    [SDR(j),SIR(j),SAR(j)] = compute_measures(se(:,j),s,j);
 end
-% Selection of the best ordering
-perm=perms(1:nsrc);
-nperm=size(perm,1);
-meanSIR=zeros(nperm,1);
-for p=1:nperm,
-    meanSIR(p)=mean(SIR((0:nsrc-1)*nsrc+perm(p,:)));
-end
-[~,popt]=max(meanSIR);
-perm=perm(popt,:).';
-SDR=SDR((0:nsrc-1).'*nsrc+perm);
-SIR=SIR((0:nsrc-1).'*nsrc+perm);
-SAR=SAR((0:nsrc-1).'*nsrc+perm);
 end
 
 function [SDR,SIR,SAR] = compute_measures(se,s,j)

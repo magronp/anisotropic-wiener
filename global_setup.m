@@ -6,7 +6,8 @@ pkg load signal statistics
 % Data
 Fs = 44100;
 Nsongs = 50;
-L = 441344;  %song length after stft+istft (samples)
+%L = 441344;
+t_chunk = [70 71];
 
 % STFT parameters
 Nfft = 4096;
@@ -19,17 +20,9 @@ dataset_path = 'dataset/DSD100/';
 out_path = 'outputs/';
 audio_path = 'audio_files/';
 
-% Algorithms
-algos = {'wiener','consW','AG','BAG'};
-%algos = {'w','cw','aw'};
-Nalgo = length(algos);
-
-% Filter parameters
-gamma_wc = 4;
-kappa_aw = 1.6;
-kappa = 5; tau=0.5;
-iter_bag = 150;
-
 % NMF
 Knmf = 10;
 iter_nmf = 50;
+
+% BAG
+iter_bag = 150;
