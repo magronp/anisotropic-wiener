@@ -2,3 +2,4 @@
 *.ogg
 data/
 !.dummy.txt
+*.mat
