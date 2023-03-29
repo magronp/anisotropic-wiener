@@ -7,6 +7,7 @@ Kappa = [0 0.05 0.1 0.5 1 5 10]; Nk=length(Kappa);
 Tau = [0 0.1 0.5 1 5 10]; Nt = length(Tau);
 
 % Initialize score array
+Nsongs = get_nsongs(data_split);
 score = zeros(Nk,Nt,3,Nsongs);
 
 % Loop over songs

@@ -7,7 +7,7 @@ pkg load signal statistics
 Fs = 44100;
 Nsongs = 50;
 %L = 441344;
-t_chunk = [70 80];
+t_chunk = [70 71];
 
 % STFT parameters
 Nfft = 4096;

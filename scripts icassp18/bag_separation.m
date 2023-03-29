@@ -22,7 +22,7 @@ end
 
 
 % Initialize score array
-Nsongs = get_nsongs(data_split)
+Nsongs = get_nsongs(data_split);
 algos = {'W','CW','AW', 'BAG'}; Nalgos = length(algos);
 score = zeros(Nalgos,3,Nsongs);
 
@@ -75,5 +75,5 @@ for ind=1:Nsongs
     
 end
 
-% Record score
+% Record BSS Eval score
 save(strcat(out_path,'bag_test_sdr.mat'),'score', 'algos');
