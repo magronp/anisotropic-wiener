@@ -1,2 +1,4 @@
 *.wav
 *.ogg
+data/
+!.dummy.txt
