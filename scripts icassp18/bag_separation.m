@@ -69,7 +69,7 @@ for ind=1:Nsongs
     
     % Score
     for al=1:Nalgos
-        [sdr,sir,sar] = GetSDR(squeeze(s_estim(:,:,al)),sm);
+        [sd,si,sa] = GetSDR(squeeze(s_estim(:,:,al)),sm);
         score(al,:,ind) = mean([sd si sa]);
     end
     

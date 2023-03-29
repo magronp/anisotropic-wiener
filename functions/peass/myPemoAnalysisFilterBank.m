@@ -41,7 +41,7 @@ end
 % gammatone filterbank
 analyzer = Gfb_Analyzer_new(fs, MinCF, base_freq, MaxCF, filters_per_ERB);
 analyzer.fsOrig = fsOrig;
-analyzer.fast = true;
+analyzer.fast = false;
 [gfb_out, analyzer] = Gfb_Analyzer_process(analyzer, x(:).');
 Nb = size(gfb_out,1);
 if nargin<3 || isempty(M)

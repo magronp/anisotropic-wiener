@@ -1,13 +1,11 @@
-% Load the signal package
+% Load the needed packages
+%pkg unload signal statistics
 pkg load signal statistics
-
-%%% Parameters used in the various experiments
 
 % Data
 Fs = 44100;
 Nsongs = 50;
-%L = 441344;
-t_chunk = [70 71];
+t_chunk = [70 70.5];
 
 % STFT parameters
 Nfft = 4096;
@@ -16,7 +14,7 @@ hop = Nw/4;
 wtype = 'hann';
 
 % Paths
-dataset_path = 'dataset/DSD100/';
+dataset_path = 'data/DSD100/';
 out_path = 'outputs/';
 audio_path = 'audio_files/';
 

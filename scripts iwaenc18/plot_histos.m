@@ -1,12 +1,17 @@
-clear all; clc; close all;
-Fs = 8000; Nfft = 744; Nw=Nfft; hop = Nfft/4;
-Nbins = 100;
+clear all; close all; clc;
+global_setup;
 
-% Gen data
-%[sm,x,Sm,X,F,T,ts,freq,f1_Hz,f2_Hz] = gen_synthetic('no_ol',Fs,Nfft,Nw,hop);
+%%% This script produces the plots in Fig. 1 and 3 from the paper
 
-[x,X,F,T,ts,freq] = get_data_MAPS_piece(Fs,Nfft,Nw,hop,1,[60 70]);
+% Load a toy example data and STFT
+[x, Fs_old] = audioread('data/piano.wav');
+xaux = resample(mean(x,2),Fs,Fs_old)';
+X = STFT(xaux,Nfft,hop,Nw,wtype);
+x = iSTFT(X,Nfft,hop,Nw,wtype);
 V = abs(X); phX = angle(X);
+[F,T] = size(X);
+ts = (0:T-1)*hop / Fs;
+freq = (1:Nfft/2)*Fs/Nfft;
 
 % Estim kappa and get peaks
 [kappa,ph_centered,phaux,f_centr] = estim_kappa_vm(X,Nfft,hop);
@@ -14,19 +19,20 @@ V = abs(X); phX = angle(X);
 % Spectrogram
 h = figure;
 imagesc(ts,freq,log10(V(:,1:end)+0.01)); axis xy; ylabel('Frequency (Hz)','fontsize',16); xlabel('Time (s)','fontsize',16);
-h.Position = [980 680 387 285];
+%h.Position = [980 680 387 285];
 
 % Phasogram
 phi = phX(f_centr==1);
 h = figure; colormap(hsv);
 imagesc(ts,freq,phX(:,1:end)); axis xy; ylabel('Frequency (Hz)','fontsize',16); xlabel('Time (s)','fontsize',16);
 colorbar;
-h.Position = [980 680 387 285];
+%h.Position = [980 680 387 285];
 
 % Phase histogram
+Nbins = 100;
 h = figure;
-histogram(phi,Nbins,'Normalization','pdf'); xlabel('\phi','fontsize',16); ylabel('Relative frequency','fontsize',16);
-h.Position = [980 680 387 285];
+hist(phi,Nbins,1); xlabel('\phi','fontsize',16); ylabel('Relative frequency','fontsize',16);
+%h.Position = [980 680 387 285];
 
 % Centered phasogram
 h = figure; colormap(hsv);
@@ -34,10 +40,10 @@ imagesc(ts,freq,phaux(:,1:end)); axis xy; ylabel('Frequency (Hz)','fontsize',16)
 phiplot = linspace(-pi,pi,Nbins);
 p_theo = exp(kappa * cos(phiplot))/(2*pi*besseli(0,kappa));
 colorbar;
-h.Position = [980 680 387 285];
+%h.Position = [980 680 387 285];
 
 % Centered phase histogram
 h = figure;
-histogram(ph_centered,Nbins,'Normalization','pdf'); hold on;
+hist(ph_centered,Nbins,1); hold on;
 plot(phiplot,p_theo,'r'); xlabel('\psi','fontsize',16); ylabel('Relative frequency','fontsize',16);
-h.Position = [980 680 387 285];
+%h.Position = [980 680 387 285];

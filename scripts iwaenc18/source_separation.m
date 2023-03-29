@@ -5,7 +5,6 @@ Fs = 44100;
 kappa_aw=1.6;
 
 Nw = 4096; kappa_aw_var=[2.28 1.26 1.51 1.30];    % with Nw = 4096
-%Nw = 2048; kappa_aw_var=[2.16 1.33 1.7 1.39];    % with Nw = 2048
 
 Nfft = Nw; hop = Nw/4;
 direc = 'vonmises/audio_files/';

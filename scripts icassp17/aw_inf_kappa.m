@@ -38,7 +38,7 @@ for ind=1:Nsongs
         % Synthesis and score
         se = real(iSTFT(Xaw,Nfft,hop,Nw,wtype));
         [sd,si,sa] = GetSDR(se,sm);
-        score(kap,:,ind) = [mean(sd) mean(si) mean(sa)];    
+        score(kap,:,ind) = mean([sd si sa]);
     end
     
 end

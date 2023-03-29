@@ -1,5 +1,6 @@
 *.wav
+!data/piano.wav
+data/*
 *.ogg
-data/
-!.dummy.txt
 *.mat
+
