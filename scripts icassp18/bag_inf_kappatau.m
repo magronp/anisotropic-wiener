@@ -1,6 +1,7 @@
 clear all; close all; clc;
-data_split = 'Dev';
 global_setup;
+
+data_split = 'Dev';
 
 % Anisotropy parameters
 Kappa = [0 0.05 0.1 0.5 1 5 10]; Nk=length(Kappa);
@@ -25,7 +26,7 @@ for ind=1:Nsongs
         nu(:,:,j) = get_frequencies_qifft(abs(Sm(:,:,j)))/Nfft;
     end
 
-     % kappa=0 (no need to test all values for tau in this case)
+    % kappa=0 (no need to test all values for tau in this case)
     clc; fprintf('Data %d / %d \n Kappa = tau = 0',ind,Nsongs);
     [m_post,~,~,~] = bayesian_ag_estim(X,v,muini,0,0,hop,iter_bag,nu,0,sm,Nfft,Nw,wtype,0);
     [sd,si,sa] = GetSDR(m_post,sm);

@@ -3,26 +3,23 @@ global_setup;
 
 data_split = 'Test';
 
-% AW and CW parameters
+% AW parameter
 kappa_aw = 1.6
-gamma_cw = 4;
 
-% BAG parameters (optimal values from the Dev set, or default values)
-dev_res = strcat(out_path,'bag_dev.mat');
+% AW parameters (optimal values from the Dev set, or default values)
+dev_res = strcat(out_path,'vm_kappa_dev.mat');
 if isfile(dev_res)
     load(dev_res);
-    sdrav = mean(squeeze(score(:,:,1,:)), 3);
-    [~, idt] = max(max(sdrav,[],1));
-    [~, idk] = max(max(sdrav,[],2));
-    kappa_bag = Kappa(idk); tau_bag = Tau(idk);
+    ind_nw = find(Nw==Win_len)
+    mean(squeeze(kappa(:,ind_nw,:)),2)
 else
-    kappa_bag = 5;
-    tau_bag = 0.5;
+    kappa_aw_var=[2.28 1.26 1.51 1.30];
 end
+
 
 % Initialize score array
 Nsongs = get_nsongs(data_split);
-algos = {'W','CW','AW', 'BAG'}; Nalgos = length(algos);
+algos = {'W','AW','AWvar'}; Nalgos = length(algos);
 score = zeros(Nalgos,3,Nsongs);
 
 for ind=1:Nsongs
@@ -44,9 +41,12 @@ for ind=1:Nsongs
     % Separation
     fprintf('Separation \n');
     Xe(:,:,:,1) = v.* repmat(X ./ sum(v,3),[1 1 J]);
-    Xe(:,:,:,2) = consistent_wiener(X,v,gamma_cw,Nfft,Nw,hop);
-    Xe(:,:,:,3) = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop);
-    Xe(:,:,:,4) = bayesian_ag_estim(X,v,muini,kappa_bag,tau_bag,hop,iter_bag,nu,0,sm,Nfft,Nw,wtype,0);
+    Xe(:,:,:,2) = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop);
+    kap = zeros(F,T,J);
+    for j=1:J
+        kap(:,:,j) = kappa_aw_var(j);
+    end
+    Xe(:,:,:,3) = anisotropic_wiener(X,v,kap,hop);
     
     % Synthesis
     fprintf('Score... \n');
@@ -56,7 +56,7 @@ for ind=1:Nsongs
     end
     
     % Record audio
-    rec_dir = strcat(audio_path,'ICASSP18/', int2str(ind), '/');
+    rec_dir = strcat(audio_path,'IWAENC18/', int2str(ind), '/');
     mkdir(rec_dir)
     audiowrite(strcat(rec_dir,'mix.wav'),x,Fs);
     for j=1:J
@@ -75,4 +75,4 @@ for ind=1:Nsongs
 end
 
 % Record BSS Eval score
-save(strcat(out_path,'bag_test_sdr.mat'),'score', 'algos');
+save(strcat(out_path,'aw_var_test.mat'),'score', 'algos');
