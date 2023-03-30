@@ -7,7 +7,6 @@ This repository contains the code related to the anisotropic Wiener (AW) filter 
 - P. Magron, T. Virtanen, [Bayesian anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01632081), Proc. IEEE ICASSP 2018.
 - P. Magron, T. Virtanen, [On modeling the STFT phase of audio signals with the von Mises distribution](https://hal.archives-ouvertes.fr/hal-01763147), Proc. iWAENC 2018.
 
-AW was also used in conjunction with NMF for joint magnitude and phase estimation (see [complex-isnmf](https://github.com/magronp/complex-isnmf) and [complex-beta-nmf](https://github.com/magronp/complex-beta-nmf)), and as post-processing in DNN-based separation (see [phase-madtwinnet](https://github.com/magronp/phase-madtwinnet) and [phase-hpss](https://github.com/magronp/phase-hpss)).
 
 si Octave, il faut le package signal (qui nécessite control)
 
@@ -15,5 +14,19 @@ si Octave, il faut le package signal (qui nécessite control)
 	sudo apt install octave-control
 	sudo apt install octave-resample
 	sudo apt install octave-statistics
+
+
+
+
+## Scenarios
+
+Oracle
+(true magnitudes)
+
+Informed
+Magnitudes estimated with NMF
+
+More realistically, we used some filters in conjunction with NMF for joint magnitude and phase estimation (see [complex-isnmf](https://github.com/magronp/complex-isnmf) and [complex-beta-nmf](https://github.com/magronp/complex-beta-nmf)), and as post-processing in DNN-based separation for singing voice separation (see [phase-madtwinnet](https://github.com/magronp/phase-madtwinnet)) and harmonic-percussive source separation [phase-hpss](https://github.com/magronp/phase-hpss)).
+
 
 

@@ -1,11 +1,9 @@
 % Load the needed packages
-%pkg unload signal statistics
 pkg load signal statistics
 
 % Data
 Fs = 44100;
-Nsongs = 50;
-t_chunk = [70 70.5];
+t_chunk = [70 80];
 
 % STFT parameters
 Nfft = 4096;

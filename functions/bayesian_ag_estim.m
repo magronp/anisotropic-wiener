@@ -1,10 +1,10 @@
-function [m_post,mu,C_MAP,scorebss] = bayesian_ag_estim(X,vini,muini,kappa,tau,hop,Niter,nu,computecost,sm,Nfft,Nw,wtype,upv)
+function [m_post,mu,C_MAP,scorebss] = bayesian_ag_estim(X,vini,kappa,tau,hop,Niter,nu,computecost,sm,Nfft,Nw,wtype,upv)
 
-if nargin<14
+if nargin<13
     upv=1;
 end
 
-T = size(X,2);
+[F,T,J] = size(vini);
 
 % Anisotropy parameters
 lambda = besseli(1,kappa) / besseli(0,kappa) *sqrt(pi)/2;
@@ -12,7 +12,7 @@ rho=besseli(2,kappa)./besseli(0,kappa) - lambda.^2;
 
 % Initial components
 v = vini;
-mu = muini;
+mu = repmat(angle(X),[1 1 J]);
 m = lambda * sqrt(v) .* exp(1i*mu);
 gamma = (1-lambda^2)*v;
 c = rho*v .* exp(2i*mu);
