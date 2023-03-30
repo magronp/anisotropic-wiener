@@ -12,6 +12,3 @@ global_setup;
 algos = {'w','unwrap','cw','aw','bag','aw-var'};
 test_algos_ssep(dataset_path,out_path,audio_path,algos,'oracle',Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,Knmf,iter_nmf);
 test_algos_ssep(dataset_path,out_path,audio_path,algos,'informed',Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,Knmf,iter_nmf);
-
-
-% accélerer le calcul des nu en parralélisant toutes les trames ?
