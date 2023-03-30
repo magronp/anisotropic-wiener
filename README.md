@@ -7,7 +7,9 @@
 This repository contains the code related to the anisotropic Wiener (AW) filter method for phase-aware audio source separation. AW is the topic of several research papers, that you're encouraged to check and to cite if you use the related content (see [below](#references)).
 
 
-## Setup
+## Using this code
+
+### Setup
 
 Even though this code was primarly developed with Matlab, we've adapted it to Octave. To fully use it, you need several Octave packages, which we can install as follow:
 
@@ -18,13 +20,27 @@ Even though this code was primarly developed with Matlab, we've adapted it to Oc
 
 The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file).
 
-## Usage
+### Reproducing the papers' results
 
-This repository contains several general functions to benchmark certain algorithms and/or magnitude estimation scenarios. You can simply run the main script `run_all.m` in order to train all methods (= learn the optimal hyperparameters), evaluate them on the test set (it will record estimated audio and scores), and display the results (reported bellow).
+This repository contains several general functions to benchmark certain algorithms and/or magnitude estimation scenarios. If you're only interested in reproducing a specific paper's results, we have created one script per paper that you can simply run for reproducing this paper (e.g., `icassp18.m` for our ICASSP 2018 paper). These scripts are simple in structure and consist of three main steps:
+1. Learn the optimal hyperparameters on the development set.
+2. Evaluate the considered algorithms on the test set (perform separation, record audio, and store the SDR/SIR/SAR).
+3. Plot/display the results corresponding to images and/or tables in the paper.
 
-If you're only interested in reproducing a specific paper's results, simply run the corresponding script. For instance, if you want to reproduce the experiments from our ICASSP 2018 paper, then run `icassp18.m`.
+If you want to skip step 1., then simply comment the corresponding line(s) in the script: the test function will use default values that correspond to these optimum.
 
-Note that `icassp17.m`, `icassp18.m`, and `iwaenc18.m` perform separation into 4 stems (bass, drums, other, and vocals), while `waspaa17.m` performs singing voice separation, thus it produces two stems (vocals and accompaniment).
+Note that `icassp17.m`, `icassp18.m`, and `iwaenc18.m` perform separation into 4 stems (bass, drums, other, and vocals), while `waspaa17.m` performs singing voice separation.
+
+Also note that the results might slightly differ from the papers:
+
+- `icassp17.m` uses the scale-invariant SDR/SIR/SAR, while in the paper we used BSS Eval v3, which allows for frame-wise filters. The exact scores values are consequently not the same, but the comparison remains valid.
+
+- `iwaenc18` plots the kappa as a function of Nw for all sources in the DSD100 dataset. In the paper, we only displayed it for guitar and piano, from different datasets (MAPS and ...). Here we only included DSD100 for simplicity.
+
+### Everything at once
+
+If you want to train and test all methods, you can simply run the main script `run_all.m`.
+
 
 
 ## Scenarios
