@@ -1,6 +1,6 @@
 #  Anisotropic Wiener filter
 
-<center><img src="ag.eps" width="500"></center>
+<center><img src="ag.png" width="500"></center>
 
 This repository contains the code related to the anisotropic Wiener (AW) filter method for phase-aware audio source separation. AW is the topic of several research papers, that you're encouraged to check and to cite if you use the related content:
 
