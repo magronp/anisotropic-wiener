@@ -41,65 +41,10 @@ Magnitudes estimated with NMF
 
 The results from this project have been published in the following papers:
 
-<details><summary> IEEE ICASSP 2017.
-
-P. Magron, R. Badeau, B. David, [Phase-dependent anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01416355)
-
-</summary>
-
-```latex
-@inproceedings{Magron2021,  
-  author={P. Magron and P.-H. Vial and T. Oberlin and C. F{\'e}votte},  
-  title={Phase recovery with Bregman divergences for audio source separation},  
-  booktitle={Proc. IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},  
-  year={2021},
-  month={June}
-}
-```
-
-</p>
-</details>
-
-<details><summary>
-
-P. Magron, J. Le Roux, T. Virtanen, [Consistent anisotropic Wiener filtering for audio source separation](https://hal.archives-ouvertes.fr/hal-01593126), Proc. IEEE WASPAA 2017.
-
-</summary>
-```latex
-@inproceedings{Magron2021,  
-  author={P. Magron and P.-H. Vial and T. Oberlin and C. F{\'e}votte},  
-  title={Phase recovery with Bregman divergences for audio source separation},  
-  booktitle={Proc. IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},  
-  year={2021},
-  month={June}
-}
-```
-</p>
-</details>
-<details><summary>P. Magron, T. Virtanen, [Bayesian anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01632081), Proc. IEEE ICASSP 2018.</summary>
-```latex
-@inproceedings{Magron2021,  
-  author={P. Magron and P.-H. Vial and T. Oberlin and C. F{\'e}votte},  
-  title={Phase recovery with Bregman divergences for audio source separation},  
-  booktitle={Proc. IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},  
-  year={2021},
-  month={June}
-}
-```
-</p>
-</details>
-<details><summary>P. Magron, T. Virtanen, [On modeling the STFT phase of audio signals with the von Mises distribution](https://hal.archives-ouvertes.fr/hal-01763147), Proc. iWAENC 2018.</summary>
-```latex
-@inproceedings{Magron2021,  
-  author={P. Magron and P.-H. Vial and T. Oberlin and C. F{\'e}votte},  
-  title={Phase recovery with Bregman divergences for audio source separation},  
-  booktitle={Proc. IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},  
-  year={2021},
-  month={June}
-}
-```
-</p>
-</details>
+-P. Magron, R. Badeau, B. David, [Phase-dependent anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01416355), Proc. IEEE ICASSP 2017.
+-P. Magron, J. Le Roux, T. Virtanen, [Consistent anisotropic Wiener filtering for audio source separation](https://hal.archives-ouvertes.fr/hal-01593126), Proc. IEEE WASPAA 2017.
+-P. Magron, T. Virtanen, [Bayesian anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01632081), Proc. IEEE ICASSP 2018.
+-P. Magron, T. Virtanen, [On modeling the STFT phase of audio signals with the von Mises distribution](https://hal.archives-ouvertes.fr/hal-01763147), Proc. iWAENC 2018.
 
 
 ### Related projects
