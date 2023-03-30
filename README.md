@@ -42,6 +42,7 @@ Magnitudes estimated with NMF
 The results from this project have been published in the following papers:
 
 <details><summary>P. Magron, R. Badeau, B. David, [Phase-dependent anisotropic Gaussian model for audio source separation](https://hal.archives-ouvertes.fr/hal-01416355), Proc. IEEE ICASSP 2017.</summary>
+
 ```latex
 @inproceedings{Magron2021,  
   author={P. Magron and P.-H. Vial and T. Oberlin and C. F{\'e}votte},  
@@ -51,8 +52,10 @@ The results from this project have been published in the following papers:
   month={June}
 }
 ```
+
 </p>
 </details>
+
 <details><summary>P. Magron, J. Le Roux, T. Virtanen, [Consistent anisotropic Wiener filtering for audio source separation](https://hal.archives-ouvertes.fr/hal-01593126), Proc. IEEE WASPAA 2017.</summary>
 ```latex
 @inproceedings{Magron2021,  
