@@ -3,5 +3,5 @@
 data/DSD100
 *.ogg
 *.mat
-data/*
-!data/.dummy.txt
+peass/*
+!peass/.dummy.txt
