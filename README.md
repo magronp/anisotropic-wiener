@@ -52,7 +52,7 @@ Oracle
 (true magnitudes)
 
 Informed
-Magnitudes estimated with NMF
+Magnitudes estimated with NMF allala
 
 
 
