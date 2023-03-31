@@ -1,5 +1,5 @@
 % Load the needed packages
-pkg load signal statistics
+pkg load signal statistics dataframe
 
 % Data
 Fs = 44100;
@@ -16,9 +16,7 @@ dataset_path = 'data/DSD100/';
 out_path = 'outputs/';
 audio_path = 'audio_files/';
 
-% NMF
+% Iterative algos parameters (NMF, BAG)
 Knmf = 10;
 iter_nmf = 50;
-
-% BAG
 iter_bag = 150;

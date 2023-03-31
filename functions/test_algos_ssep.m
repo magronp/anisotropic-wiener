@@ -31,7 +31,7 @@ for ind=1:Nsongs
     v = estimate_power(Sm, scenar, Knmf, iter_nmf);
     
     % Already record the mixture and original sources
-    rec_dir = strcat(audio_path,'all_sources/',scenar,'/song', int2str(ind), '/');
+    rec_dir = strcat(audio_path,'all_sources/',scenar,'/song',int2str(ind),'/');
     mkdir(rec_dir)
     audiowrite(strcat(rec_dir,'mix.wav'),x,Fs);
     for j=1:J

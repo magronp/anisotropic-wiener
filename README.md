@@ -17,6 +17,9 @@ Even though this code was primarly developed with Matlab, we've adapted it to Oc
 	sudo apt install octave-control
 	sudo apt install octave-resample
 	sudo apt install octave-statistics
+	sudo apt install octave-dataframe	
+
+Note that you can ignore `statistics` and `dataframe` if you don't intend to plot the results. This project also uses the [PEASS](https://hal.inria.fr/inria-00567152/document) toolbox for source separation evaluation, that you can download [here](https://gitlab.inria.fr/bass-db/peass) (remember to follow instructions and to compile it beforehand for faster computation).
 
 The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file).
 

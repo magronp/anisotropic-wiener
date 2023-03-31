@@ -1,12 +1,11 @@
-clear all; clc; close all;
-global_setup
+function plot_vm_kappa(out_path)
 
 % Load dev results
 load(strcat(out_path, 'dev_vm_kappa.mat'));
 [J,Nwin,~] = size(kappa);
 sources = {'bass';'drums';'other';'vocals'};
 
-% Kappa vs. window length (similar to Fig. 4 in the paper)
+% Kappa vs. window length
 kappa_win = mean(kappa,3);
 
 figure;
@@ -19,7 +18,7 @@ for j=1:J
 end;
 
 
-% Kappa for each source (Nw=4096) (Fig. 5 in the paper)
+% Kappa for each source (Nw=4096)
 ind_nw = find(Win_len==4096);
 kappa4069 = transpose(squeeze(kappa(:,ind_nw,:)));
 
@@ -28,3 +27,5 @@ figure;
 ylabel('\kappa','fontsize',16);
 set(gca,'xtick', 1:J, 'xticklabel', sources,'fontsize',16);
 delete (h.outliers); delete (h.outliers2);
+
+end
