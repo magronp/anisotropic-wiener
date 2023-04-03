@@ -34,7 +34,7 @@ for ind=1:Nsongs
             clc; fprintf('data %d / %d \n source %d / %d \n algo  %d / %d ',ind,Nsongs,j,J,al,Nalgos);
             est_path = strcat(rec_dir,'source',int2str(j),'_',algos{al},'.wav');
             res = PEASS_ObjectiveMeasure(originalFiles,est_path,options);
-            score{al}(j,:,ind) = [res.OPS res.TPS res.IPS res.APS];
+            score_all{al}(j,:,ind) = [res.OPS res.TPS res.IPS res.APS];
         end
         originalFiles = circshift(originalFiles,1);
     end
