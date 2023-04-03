@@ -1,16 +1,26 @@
-function test_algos_ssep(dataset_path,out_path,audio_path,algos,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,Knmf,iter_nmf)
+function test_algos_ssep(dataset_path,out_path,audio_path,algos,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,max_iter_caw,Knmf,iter_nmf,task)
+
+if nargin<16
+    task = 'all_sources';
+end
 
 % General parameters
-J = 4;
+switch task
+    case 'all_sources'
+        J=4;
+    case 'singing_sep'
+        J=2;
+end
 data_split = 'Test';
 Nsongs = get_nsongs(data_split);
 Nalgos = length(algos);
 
 % Algorithms parameters
-kappa_aw = load_param_aw(out_path,scenar);
-[kappa_bag, tau_bag] = load_param_bag(out_path,scenar);
+kappa_aw = load_param_aw(out_path,scenar,task);
+[kappa_bag, tau_bag] = load_param_bag(out_path,scenar,task);
 kappa_aw_var = load_param_aw_var(out_path);
-gamma_cw = 4;
+gamma_cw = load_param_cw(out_path,scenar,task);
+delta_caw = load_param_caw(out_path,scenar,task);
 
 % Initialize score / time arrays
 score_all = cell(1, Nalgos);
@@ -24,15 +34,15 @@ end
 for ind=1:Nsongs
    
     % Load data
-    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk);
+    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype,task);
     [F,T,J] = size(Sm);
     
     % Get the variance
     v = estimate_power(Sm, scenar, Knmf, iter_nmf);
     
     % Already record the mixture and original sources
-    rec_dir = strcat(audio_path,'all_sources/',scenar,'/song',int2str(ind),'/');
-    mkdir(rec_dir)
+    rec_dir = strcat(audio_path,task,'/',scenar,'/song',int2str(ind),'/');
+    mkdir(rec_dir);
     audiowrite(strcat(rec_dir,'mix.wav'),x,Fs);
     for j=1:J
         audiowrite(strcat(rec_dir,'source',int2str(j),'_orig.wav'),sm(j,:),Fs);
@@ -67,7 +77,8 @@ for ind=1:Nsongs
             case 'cw'
                 Xe = consistent_wiener(X,v,gamma_cw,Nfft,Nw,hop,wtype);
             case 'aw'
-                Xe = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
+                X_e = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
+                X_aw = Xe % store it for CAW
             case 'bag'
                 Xe = bayesian_ag_estim(X,v,kappa_bag,tau_bag,hop,iter_bag,nu,0,sm,Nfft,Nw,wtype,0);
             case 'aw-var'
@@ -78,7 +89,11 @@ for ind=1:Nsongs
                 Xe = anisotropic_wiener(X,v,kap,hop);
             case 'unwrap'
                 [Xe,~] = sep_unwrap(X,v,nu,hop,UN);
-            
+            case 'caw'
+                if not(exist('X_aw'))
+                    X_aw = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
+                end
+                Xe = caw(X_aw,v,kappa_aw,delta_caw,Nw,hop,wtype,1e-6,max_iter_caw);
         end
               
         % Store time
@@ -101,38 +116,97 @@ for ind=1:Nsongs
 
 end
 
-% Record score and time for all algos
+% Record score and time for all algos (create output directory if needed)
+out_dir = strcat(out_path,task,'/');
+mkdir(out_dir);
 for al=1:Nalgos
     score = score_all{al};
     time_comput = time_all{al};
-    save(strcat(out_path,'test_bss_',scenar,'_',algos{al},'.mat'),'score','time_comput');
+    save(strcat(out_dir,'test_bss_',scenar,'_',algos{al},'.mat'),'score','time_comput');
 end
 
 end
 
 
-function kappa_aw = load_param_aw(out_path, scenar)
+function kappa_aw = load_param_aw(out_path, scenar, task)
 % AW anisotropy parameter (optimal value from the Dev set, or default)
-dev_res = strcat(out_path,'dev_aw_',scenar,'.mat');
+dev_res = strcat(out_path,task,'/dev_aw_',scenar,'.mat');
 if isfile(dev_res)
     load(dev_res);
     [~,idk] = max(mean(squeeze(score(:,1,:)), 2));
     kappa_aw = Kappa(idk);
 else
+    switch task
+        case 'all_sources'
+            switch scenar
+                case 'oracle'
+                    kappa_aw = 1.6;
+                case 'informed'
+                    kappa_aw = 1;
+            end
+        case 'singing_sep'
+            switch scenar
+                case 'oracle'
+                    kappa_aw = 1;
+                case 'informed'
+                    kappa_aw = 0.8;
+            end
+    end
+    
+end
+
+end
+
+
+function gamma_cw = load_param_cw(out_path, scenar, task)
+% CW parameter (optimal value from the Dev set for 'singing_sep', or default for 'all_sources')
+
+switch task
+    case 'all_sources'
+        gamma_cw = 4;
+    case 'singing_sep'
+        dev_res = strcat(out_path,task,'/dev_cw_',scenar,'.mat');
+        if isfile(dev_res)
+            load(dev_res);
+            [~,idk] = max(mean(squeeze(score(:,1,:)), 2));
+            gamma_cw = Delta(idk);
+        else
+            switch scenar
+                case 'oracle'
+                    gamma_cw = 10;
+                case 'informed'
+                    gamma_cw = 1;
+            end
+end
+
+end
+
+end
+
+
+function delta_caw = load_param_caw(out_path, scenar, task)
+% CAW parameter (optimal value from the Dev set)
+
+dev_res = strcat(out_path,task,'/dev_caw_',scenar,'.mat');
+if isfile(dev_res)
+    load(dev_res);
+    [~,idk] = max(mean(squeeze(score(:,1,:)), 2));
+    gamma_cw = Delta(idk);
+else
     switch scenar
         case 'oracle'
-            kappa_aw = 1.6;
+            delta_caw = 10;
         case 'informed'
-            kappa_aw = 1;
+            delta_caw = 1;
     end
 end
 
 end
 
 
-function [kappa_bag,tau_bag] = load_param_bag(out_path, scenar)
+function [kappa_bag,tau_bag] = load_param_bag(out_path, scenar, task)
 % BAG anisotropy parameters (optimal values from the Dev set, or default)
-dev_res = strcat(out_path,'dev_bag_',scenar,'.mat');
+dev_res = strcat(out_path,task,'/dev_bag_',scenar,'.mat');
 if isfile(dev_res)
     load(dev_res);
     sdrav = mean(squeeze(score(:,:,1,:)), 3);

@@ -1,10 +1,15 @@
-function [SE,iter,cost,score] = caw_multi(m_post,V2,mu,kappa,delta,Nfft,w,hop,Nit,sm,bss)
+function [SE,iter,cost,score] = caw_multisources(Xini,variances,mu,kappa,delta,Nfft,w,hop,Nit,sm,bss)
+(Xini,variances,kappa,delta,Nw,hop,wtype,tol_pcg,max_iter,sm)
 
 if nargin<11
     bss =0;
 end
 
-[F,T,J]=size(m_post);
+if nargin<8
+    tol_pcg = 1e-6;
+end
+
+[F,T,J]=size(Xini);
 Jp=J-1;
 
 wlen=2*(F-1);
@@ -12,8 +17,8 @@ wlen=2*(F-1);
 % AG sources moments
 lambda = besseli(1,kappa) ./ besseli(0,kappa);
 rho = (besseli(2,kappa).*besseli(0,kappa) - besseli(1,kappa).^2 )./ besseli(0,kappa).^2;
-gamma = (1-lambda.^2).* V2;
-c = rho.*V2 .*exp(2*1i*mu) ;
+gamma = (1-lambda.^2).* variances;
+c = rho.*variances .*exp(2*1i*mu) ;
 
 gj = gamma(:,:,1:Jp); cj = c(:,:,1:Jp);
 gJ = gamma(:,:,J); cJ = c(:,:,J);
@@ -35,7 +40,7 @@ A = (gtilde.*gX-ctilde.*conj(cX))./detGX;
 B = (gX.*ctilde-cX.*gtilde)./detGX;
 
 %%% Initialization (AW) )%%%
-SE=m_post(:,:,1:Jp);
+SE=Xini(:,:,1:Jp);
 
 %%% Conjugate gradient %%%
 wei=repmat([1; 2*ones(F-2,1); 1],[1 T Jp]);
@@ -91,14 +96,8 @@ for iter=1:Nit
     beta=rsnew/(rsold+realmin);
     P=z+beta*P;
     rsold=rsnew;
-    
-    %OmegaS = (gj.* SE - cj .*conj(SE) )./detGj + (gJ.* sum(SE,3) - cJ .*conj(sum(SE,3)) )./detGJ;
-    %OmegaMU = (gj.* m_post(:,:,1:Jp) - cj .*conj(m_post(:,:,1:Jp)) )./detGj + (gJ.* sum(m_post(:,:,1:Jp),3) - cJ .*conj(sum(m_post(:,:,1:Jp),3)) )./detGJ;
-    %cost = [cost 0.5*sum(sum(sum( real( wei .*conj(SE).* OmegaS ) ))) - sum(sum(sum( real(wei.* conj(SE) .*OmegaMU )  )))];
-   
 end
 
-%cost = cost(1:iter);
 score = [];
 if bss
    score = zeros(J,Nit+1,3);

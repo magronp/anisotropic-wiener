@@ -1,4 +1,8 @@
-function dev_aw_kappa(dataset_path,out_path,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,Knmf, iter_nmf)
+function dev_aw_kappa(dataset_path,out_path,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,Knmf,iter_nmf,task)
+
+if nargin<12
+    task = 'all_sources';
+end
 
 data_split = 'Dev';
 
@@ -13,7 +17,7 @@ score = zeros(Nkappa,3,Nsongs);
 for ind=1:Nsongs
    
     % Load the data
-    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype);
+    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype,task);
     [F,T,J] = size(Sm);
     
     % Get the variance
@@ -24,7 +28,6 @@ for ind=1:Nsongs
     UN = detect_onset_frames(sqrt(v),Fs,win,hop);
    
     % AW
-    se = zeros(size(sm));
     for kap=1:Nkappa
         clc; fprintf('-- Dev AW -- '); fprintf(scenar);
         fprintf('\n Song %d / %d \n Kappa %d / %d \n',ind,Nsongs,kap,Nkappa);
@@ -41,7 +44,9 @@ for ind=1:Nsongs
     
 end
 
-% Save score
-save(strcat(out_path,'dev_aw_',scenar,'.mat'),'score','Kappa');
+% Save score (create the directory if needed)
+out_dir = strcat(out_path,task,'/');
+mkdir(out_dir);
+save(strcat(out_dir,'dev_aw_',scenar,'.mat'),'score','Kappa');
 
 end

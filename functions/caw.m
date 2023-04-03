@@ -33,7 +33,7 @@ if nargin<10
 end
 
 if nargin<9
-    max_iter = 100;
+    max_iter = 60;
 end
 
 if nargin<8

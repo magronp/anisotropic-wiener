@@ -1,4 +1,4 @@
-function [Se,cost,score_bss] = consistent_anis_wiener(m_post,kappa,mu,V2,delta,Nfft,w,hop,Nit,sm)
+function [Se,cost,score_bss] = caw_auxfunction(m_post,kappa,mu,V2,delta,Nfft,w,hop,Nit,sm)
 
 % Mixture STFT (F*T)
 % m_post : posterior moments in the AG model (F*T) (gen. Wiener)

@@ -1,4 +1,8 @@
-function dev_bag_kappatau(dataset_path,out_path,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,Knmf,iter_nmf)
+function dev_bag_kappatau(dataset_path,out_path,scenar,Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,Knmf,iter_nmf,task)
+
+if nargin<13
+    task = 'all_sources';
+end
 
 data_split = 'Dev';
 
@@ -13,7 +17,7 @@ score = zeros(Nk,Nt,3,Nsongs);
 for ind=1:Nsongs
    
     % Load the data
-    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype);
+    [sm,x,Sm,X] = get_data_DSD(dataset_path,data_split,ind,Fs,Nfft,Nw,hop,t_chunk,wtype,task);
     [F,T,J] = size(Sm);
     
     % Get the variance
@@ -48,8 +52,10 @@ for ind=1:Nsongs
     
 end
 
-% Save score
+% Save score (create the directory if needed)
+out_dir = strcat(out_path,task,'/');
+mkdir(out_dir);
 score(1,:,:,:) = repmat(score(1,1,:,:),[1 Nt 1 1]);
-save(strcat(out_path,'dev_bag_',scenar,'.mat'),'score','Kappa', 'Tau');
+save(strcat(out_dir,'dev_bag_',scenar,'.mat'),'score','Kappa', 'Tau');
 
 end
