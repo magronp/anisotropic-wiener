@@ -1,7 +1,11 @@
-function plot_inf_kappa_aw(out_path,scenar)
-  
+function plot_inf_kappa_aw(out_path,scenar,task)
+
+if nargin<3
+    task = 'all_sources';
+end
+
 % Load the data
-load(strcat(out_path,'dev_aw_',scenar,'.mat')),
+load(strcat(out_path,task,'/dev_aw_',scenar,'.mat')),
 score_av = mean(score,3);
 
 % Plot

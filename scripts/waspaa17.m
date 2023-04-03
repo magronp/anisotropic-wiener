@@ -7,6 +7,7 @@ global_setup;
 
 task = 'singing_sep';
 algos = {'w','aw','cw','caw'};
+algos_plot = {'Wiener', 'AW', 'CW','CAW'};
 
 %%% Optimal parameters
 
@@ -29,16 +30,9 @@ test_algos_ssep(dataset_path,out_path,audio_path,algos,'informed',Fs,Nfft,Nw,hop
 
 %%% Display the results
 
+% Influence of delta (Fig. 1)
+plot_inf_delta_caw(out_path,'oracle')
+plot_inf_delta_caw(out_path,'informed')
 
-
-% Record scores
-save(strcat(metrics_path,'learning_caw_',scenario,'.mat'),'score','Delta');
-
-% Plot the SDR
-SDR = squeeze(mean(score(:,1,:,:),4));
-
-figure;
-semilogx(Delta,SDR(1,:),'b*-'); hold on; semilogx(Delta,SDR(2,:),'ro-');
-title(scenario,'fontsize',16); xlabel('\delta','FontSize',16); ylabel('SDR (dB)','FontSize',16); 
-ha=legend('Isotropic','Anisotropic'); set(ha,'FontSize',14);
-
+% Test results (Table 1)
+test_results_display(out_path,'oracle',algos,algos_plot,'bss',1,task);

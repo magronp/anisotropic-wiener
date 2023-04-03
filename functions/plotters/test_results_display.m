@@ -1,4 +1,8 @@
-function test_results_display(out_path,scenar,algos,algos_plot,metric,res_per_source)
+function test_results_display(out_path,scenar,algos,algos_plot,metric,res_per_source,task)
+
+if nargin<7
+    task = 'all_sources';
+end
 
 if nargin<6
     res_per_source = 0;
@@ -16,20 +20,27 @@ switch metric
         metric_list = {'SDR', 'SIR','SAR'};
     case 'peass'
         metric_list = {'OPS', 'TPS','IPS', 'APS'};
-endswitch
+end
 Nmetrics = length(metric_list);
+
+% Sources according to the task
+switch task
+    case 'all_sources'
+        sources = {'bass', 'drums', 'other', 'vocals'};
+    case 'singing_sep'
+        sources = {'accompaniment', 'vocals'};
+end
+J = length(sources);
 
 % Size parameters
 data_split = 'Test';
 Nsongs = get_nsongs(data_split);
 Nalgos = length(algos);
-sources = {'bass', 'drums', 'other', 'vocals'};
-J = length(sources);
 
 % Load the data
 score_all = zeros(Nalgos,Nmetrics,J);
 for al=1:Nalgos
-    load(strcat(out_path,'test_',metric,'_',scenar,'_',algos{al},'.mat'));
+    load(strcat(out_path,task,'/test_',metric,'_',scenar,'_',algos{al},'.mat'));
     score_all(al,:,:) = transpose(real(squeeze(nanmean(score,3))));
 end
 

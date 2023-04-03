@@ -1,4 +1,8 @@
-function test_results_boxplot(out_path,scenar,algos,algos_plot,metric)
+function test_results_boxplot(out_path,scenar,algos,algos_plot,metric,task)
+
+if nargin<6
+    task = 'all_sources';
+end
 
 if nargin<5
     metric = 'bss'
@@ -24,7 +28,7 @@ Nalgos = length(algos);
 % Load the data
 score_all = zeros(Nalgos,Nmetrics,Nsongs);
 for al=1:Nalgos
-    load(strcat(out_path,'test_',metric,'_',scenar,'_',algos{al},'.mat'));
+    load(strcat(out_path,task,'/test_',metric,'_',scenar,'_',algos{al},'.mat'));
     score_all(al,:,:) = real(squeeze(mean(score,1)));
 end
 

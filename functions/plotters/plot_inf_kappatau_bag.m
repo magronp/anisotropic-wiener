@@ -1,7 +1,11 @@
-function plot_inf_kappatau_bag(out_path,scenar)
+function plot_inf_kappatau_bag(out_path,scenar,task)
+
+if nargin<3
+    task = 'all_sources';
+end
 
 % Load the results
-load(strcat(out_path,'dev_bag_',scenar,'.mat'))
+load(strcat(out_path,task,'/dev_bag_',scenar,'.mat'))
 sdr = squeeze(mean(score(:,:,1,:),4));
 sir = squeeze(mean(score(:,:,2,:),4));
 sar = squeeze(mean(score(:,:,3,:),4));
