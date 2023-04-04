@@ -1,7 +1,5 @@
-*.wav
-!data/piano.wav
 data/DSD100
-*.ogg
+*.wav
 *.mat
 peass/*
 !peass/.dummy.txt
