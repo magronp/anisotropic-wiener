@@ -28,11 +28,19 @@ dev_caw_delta(dataset_path,out_path,'informed',Fs,Nfft,Nw,hop,wtype,max_iter_caw
 test_algos_ssep(dataset_path,out_path,audio_path,algos,'oracle',Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,max_iter_caw,Knmf,iter_nmf,task);
 test_algos_ssep(dataset_path,out_path,audio_path,algos,'informed',Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,max_iter_caw,Knmf,iter_nmf,task);
 
+% Results over iterations
+test_caw_iter(dataset_path,out_path,algos,'oracle',Fs,Nfft,Nw,hop,wtype,t_chunk,iter_bag,max_iter_caw,Knmf,iter_nmf,task);
+
+
 %%% Display the results
 
 % Influence of delta (Fig. 1)
-plot_inf_delta_caw(out_path,'oracle')
-plot_inf_delta_caw(out_path,'informed')
+plot_inf_delta_caw(out_path,'oracle',task)
+plot_inf_delta_caw(out_path,'informed',task)
 
 % Test results (Table 1)
 test_results_display(out_path,'oracle',algos,algos_plot,'bss',1,task);
+
+% Results over iterations (Fig. 2)
+plot_caw_iter(out_path,'oracle',task);
+

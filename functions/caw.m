@@ -42,7 +42,7 @@ end
 
 % Prepare outputs
 Xe = zeros(F,T,J);
-iter = cell(1,J-1);
+iter = 0;
 score = cell(1,J-1);
 
 var_single = zeros(F,T,2);
@@ -65,13 +65,16 @@ for j=1:J-1
     [SE,iter_single,score_single] = caw2sources(Xini(:,:,j),kappa,mu_single,var_single,delta,Nw,hop,wtype,tol_pcg,max_iter,bss,sm_single);
     
     % Collect outputs
-    iter{j} = iter_single;
+    iter = iter + iter_single;
     score{j} = score_single;
     Xe(:,:,j) = SE;
 end
 
 % Last source
 Xe(:,:,J) = sum(Xini,3)-sum(Xe(:,:,1:J-1),3);
+
+% Average number of iterations
+iter = iter / (J-1);
 
 end
 

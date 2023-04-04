@@ -22,12 +22,14 @@ kappa_aw_var = load_param_aw_var(out_path);
 gamma_cw = load_param_cw(out_path,scenar,task);
 delta_caw = load_param_caw(out_path,scenar,task);
 
-% Initialize score / time arrays
+% Initialize score / time / iter PCG arrays
 score_all = cell(1, Nalgos);
 time_all = cell(1, Nalgos);
+iter_pcg_all = cell(1, Nalgos);
 for al=1:Nalgos
     score_all{al} = zeros(J,3,Nsongs);
     time_all{al} = zeros(1,Nsongs);
+    iter_pcg_all{al} = zeros(1,Nsongs);
 end
 
 % Loop over songs
@@ -49,7 +51,7 @@ for ind=1:Nsongs
     end
     
     % Precompute inst. frequencies in some cases
-    if or(any(ismember(algos,'unwrap')),any(ismember(algos,'bag')))
+    if any(ismember(algos,{'unwrap','bag'}))
         nu = zeros(F,T,J);
         for j=1:J
             nu(:,:,j) = get_frequencies_qifft(v(:,:,j))/Nfft;
@@ -57,7 +59,7 @@ for ind=1:Nsongs
     end
     
     % Precompute onsets in some cases
-    if or(any(ismember(algos,'unwrap')),any(ismember(algos,'aw')))
+    if any(ismember(algos,{'unwrap','aw','caw'}))
         win = hann(Nw)/sqrt(Nfft);
         UN = detect_onset_frames(sqrt(v),Fs,win,hop);
     end
@@ -75,10 +77,10 @@ for ind=1:Nsongs
             case 'w'
                 Xe = v ./ (sum(v,3)+eps).*X;
             case 'cw'
-                Xe = consistent_wiener(X,v,gamma_cw,Nfft,Nw,hop,wtype);
+                [Xe,iter_pcg] = consistent_wiener(X,v,gamma_cw,Nfft,Nw,hop,wtype);
             case 'aw'
-                X_e = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
-                X_aw = Xe % store it for CAW
+                Xe = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
+                X_aw = Xe; % store it for CAW
             case 'bag'
                 Xe = bayesian_ag_estim(X,v,kappa_bag,tau_bag,hop,iter_bag,nu,0,sm,Nfft,Nw,wtype,0);
             case 'aw-var'
@@ -93,11 +95,16 @@ for ind=1:Nsongs
                 if not(exist('X_aw'))
                     X_aw = anisotropic_wiener(X,v,kappa_aw*ones(F,T,J),hop,UN);
                 end
-                Xe = caw(X_aw,v,kappa_aw,delta_caw,Nw,hop,wtype,1e-6,max_iter_caw);
+                [Xe,iter_pcg] = caw(X_aw,v,kappa_aw,delta_caw,Nw,hop,wtype,1e-6,max_iter_caw);
         end
               
         % Store time
-        time_all{j}(ind) = toc;
+        time_all{al}(ind) = toc;
+        
+        % Store PCG iterations if needed (CW and CAW)
+        if any(ismember({'cw','caw'},algos{al}))
+            iter_pcg_all{al}(ind) = iter_pcg;
+        end
         
         % Synthesis
         s_estim = real(iSTFT(Xe,Nfft,hop,Nw,wtype));
@@ -122,7 +129,8 @@ mkdir(out_dir);
 for al=1:Nalgos
     score = score_all{al};
     time_comput = time_all{al};
-    save(strcat(out_dir,'test_bss_',scenar,'_',algos{al},'.mat'),'score','time_comput');
+    iter_pcg = iter_pcg_all{al};
+    save(strcat(out_dir,'test_bss_',scenar,'_',algos{al},'.mat'),'score','time_comput','iter_pcg');
 end
 
 end
@@ -191,7 +199,7 @@ dev_res = strcat(out_path,task,'/dev_caw_',scenar,'.mat');
 if isfile(dev_res)
     load(dev_res);
     [~,idk] = max(mean(squeeze(score(:,1,:)), 2));
-    gamma_cw = Delta(idk);
+    delta_caw = Delta(idk);
 else
     switch scenar
         case 'oracle'

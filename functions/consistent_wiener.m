@@ -1,4 +1,4 @@
-function [Xe] = consistent_wiener(X,V2,gamma,Nfft,Nw,hop,wtype)
+function [Xe,iter] = consistent_wiener(X,V2,gamma,Nfft,Nw,hop,wtype)
 
 % V2 : variances |STFT|^2 
 % gamma : consistency weight
@@ -11,6 +11,7 @@ if nargin<7
     wtype = 'hann';
 end
 
+iter = 0;
 
 [F,T,K] = size(V2);
 Xe = zeros(F,T,K);
@@ -21,11 +22,17 @@ for k=1:K-1
     VS = Vsources(:,:,1);
     VN = sum(Vsources,3)-VS;
     
-    aux = cons_wiener_penalty(mixup,VS+eps,VN+eps,gamma,Nfft,Nw,hop,wtype);
+    [aux,iter_single] = cons_wiener_penalty(mixup,VS+eps,VN+eps,gamma,Nfft,Nw,hop,wtype);
     Xe(:,:,k) = aux;
     mixup = mixup - aux;
+    iter = iter + iter_single;
 end
+
+% Last source
 Xe(:,:,K) = X-sum(Xe(:,:,1:K-1),3);
+
+% Average number of iterations
+iter = iter / (J-1);
 
 end
 

@@ -36,24 +36,13 @@ Note that `icassp17.m`, `icassp18.m`, and `iwaenc18.m` perform separation into 4
 
 Also note that the results might slightly differ from the papers:
 
-- `icassp17.m` uses the scale-invariant SDR/SIR/SAR, while in the paper we used BSS Eval v3, which allows for frame-wise filters. The exact scores values are consequently not the same, but the comparison remains valid.
+- `icassp17.m` uses the scale-invariant SDR/SIR/SAR, while in the paper we used BSS Eval v3, which allows for frame-wise filters. Consequently, the score values are not exactly the same, but the comparison / general trend still holds.
 
-- `iwaenc18` plots the kappa as a function of Nw for all sources in the DSD100 dataset. In the paper, we only displayed it for guitar and piano, from different datasets (MAPS and ...). Here we only included DSD100 for simplicity.
+- `iwaenc18` plots the concentration parameter as a function of window length for all sources in the DSD100 dataset, while the paper reported it on different datasets (piano sounds from [MAPS](https://adasp.telecom-paris.fr/resources/2010-07-08-maps-database/), and guitar sounds from [IDMT-SMT-GUITAR](https://zenodo.org/record/7544110)). Here we only included DSD100 for simplicity.
 
 ### Everything at once
 
-If you want to train and test all methods, you can simply run the main script `run_all.m`.
-
-
-
-## Scenarios
-
-Oracle
-(true magnitudes)
-
-Informed
-Magnitudes estimated with NMF allala
-
+If you want to train and test all methods, you can simply run the main script `run_all_ssep.m`. This will produce more general results than the afore-mentioned scripts, e.g., non-oracle scenarios for AW-var and BAG algorithms. However, this script focuses on the task of separating the mixture into 4 stems, but you can easily adapt it to the singing voice separation task.
 
 
 ## References
