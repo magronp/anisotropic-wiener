@@ -32,7 +32,7 @@ end
 Xe(:,:,K) = X-sum(Xe(:,:,1:K-1),3);
 
 % Average number of iterations
-iter = iter / (J-1);
+iter = iter / (K-1);
 
 end
 

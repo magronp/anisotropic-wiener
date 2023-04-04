@@ -21,7 +21,7 @@ Even though this code was primarly developed with Matlab, we've adapted it to Oc
 
 Note that you can ignore `statistics` and `dataframe` if you don't intend to plot the results. This project also uses the [PEASS](https://hal.inria.fr/inria-00567152/document) toolbox for source separation evaluation, that you can download [here](https://gitlab.inria.fr/bass-db/peass) (remember to follow instructions and to compile it beforehand for faster computation).
 
-The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file).
+The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file). This repository contains a piano excerpt `piano.wav` used for computing the phase histograms (see our iWAENC 2018 paper).
 
 ### Reproducing the papers' results
 
