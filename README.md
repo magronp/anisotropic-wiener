@@ -11,11 +11,11 @@ This repository contains the code related to the anisotropic Wiener (AW) filter 
 
 ### Setup
 
-Even though this code was primarly developed with Matlab, we've adapted it to Octave. To fully use it, you need several Octave packages, which we can install as follow:
+Even though this code was initially developed with Matlab, we've adapted it to Octave. To fully use it, you need several Octave packages, which we can install as follows:
 
 	sudo apt install liboctave-dev
 	sudo apt install octave-control
-	sudo apt install octave-resample
+	sudo apt install octave-signal
 	sudo apt install octave-statistics
 	sudo apt install octave-dataframe	
 
