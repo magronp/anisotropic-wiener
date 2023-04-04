@@ -5,7 +5,6 @@ if nargin<10
     task = 'all_sources';
 end
 
-
 if nargin<9
     wtype = 'hann';
 end

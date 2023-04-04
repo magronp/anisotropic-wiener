@@ -21,7 +21,15 @@ Even though this code was initially developed with Matlab, we've adapted it to O
 
 Note that you can ignore `statistics` and `dataframe` if you don't intend to plot the results. This project also uses the [PEASS](https://hal.inria.fr/inria-00567152/document) toolbox for source separation evaluation, that you can download [here](https://gitlab.inria.fr/bass-db/peass) (remember to follow instructions and to compile it beforehand for faster computation).
 
-The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file). This repository contains a piano excerpt `piano.wav` used for computing the phase histograms (see our iWAENC 2018 paper).
+The experiments use the [Dexmixing Secret Database (DSD100)](http://www.sisec17.audiolabs-erlangen.de/) for music separation. Download it, and unzip it in the `data` folder (or change the dataset path accordingly in the `global_setup.m` file).
+
+In the `data` folder we also provide a piano excerpt `piano.ogg` used for computing the phase histograms (see our iWAENC 2018 paper), as well as a short music excerpt `mix.ogg` with isolated accompaniment and vocal (`music.ogg` and `vocals.ogg`) for a quick demo.
+
+
+### Demo
+
+You can run the script `demo_simple.m` to perform oracle source separation using the `mix.ogg` excerpt. It will record in the `audio_files` folder the isolated sources for several algorithms (the regular Wiener filter and its anisotropic and/or consistent variants).
+
 
 ### Reproducing the papers' results
 
