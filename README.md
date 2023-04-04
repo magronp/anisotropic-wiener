@@ -42,7 +42,7 @@ Also note that the results might slightly differ from the papers:
 
 ### Everything at once
 
-If you want to train and test all methods, you can simply run the main script `run_all_ssep.m`. This will produce more general results than the afore-mentioned scripts, e.g., non-oracle scenarios for AW-var and BAG algorithms. However, this script focuses on the task of separating the mixture into 4 stems, but you can easily adapt it to the singing voice separation task.
+If you want to train and test all methods performing separation into 4 sources (i.e., all except the WASPAA 2017 paper), you can simply run the main script `all_ssep.m`. This will produce more general results than the afore-mentioned scripts, e.g., non-oracle scenarios for AW-var and BAG algorithms. You can then easily adapt it to the singing voice separation task.
 
 
 ## References
