@@ -16,14 +16,10 @@ dataset_path = 'data/DSD100/';
 out_path = 'outputs/';
 audio_path = 'audio_files/';
 
-% Iterative algos parameters (NMF, BAG, CAW)
+% NMF parameters
 Knmf = 10;
 iter_nmf = 50;
+
+% Iterative algorithms parameters (BAG, CAW)
 iter_bag = 150;
 max_iter_caw = 60;
-
-% Anisotropy parameters
-kappa_caw = 1;
-delta_caw = 10;
-kappa_caw = 0.8;
-delta_caw = 1;
