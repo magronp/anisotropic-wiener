@@ -14,10 +14,7 @@ This repository contains the code related to the anisotropic Wiener (AW) filter 
 Even though this code was initially developed with Matlab, we've adapted it to Octave. To fully use it, you need several Octave packages, which we can install as follows:
 
 	sudo apt install liboctave-dev
-	sudo apt install octave-control
-	sudo apt install octave-signal
-	sudo apt install octave-statistics
-	sudo apt install octave-dataframe	
+	sudo apt install octave-control octave-signal octave-statistics octave-dataframe
 
 Note that you can ignore `statistics` and `dataframe` if you don't intend to plot the results. This project also uses the [PEASS](https://hal.inria.fr/inria-00567152/document) toolbox for source separation evaluation, that you can download [here](https://gitlab.inria.fr/bass-db/peass) (remember to follow instructions and to compile it beforehand for faster computation).
 
