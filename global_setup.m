@@ -22,10 +22,8 @@ iter_nmf = 50;
 iter_bag = 150;
 max_iter_caw = 60;
 
-
-% Anisotropy parameter
+% Anisotropy parameters
 kappa_caw = 1;
 delta_caw = 10;
 kappa_caw = 0.8;
 delta_caw = 1;
-
